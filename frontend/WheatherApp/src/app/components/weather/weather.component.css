@@ -1,0 +1,6 @@
+.container { max-width: 800px; margin: 2rem auto; font-family: Arial, sans-serif; }
+select, input, button { margin: 0.5rem; padding: 0.4rem; }
+.error { color: red; margin-top: 1rem; }
+table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: center; }
+.history-controls { margin-top: 1.5rem; }

@@ -1,0 +1,68 @@
+<div class="container">
+  <h2>Pogoda – wybierz miasto</h2>
+  <select [(ngModel)]="selectedCityId" name="city" (change)="onCityChange()">
+    <option *ngFor="let city of cities" [value]="city.id">
+      {{ city.name }} ({{ city.countryCode }})
+    </option>
+  </select>
+  
+  <div *ngIf="loading">Ładowanie danych...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="current">
+    <h3>Aktualna pogoda ({{ current.recordedAt }})</h3>
+    <p>Temperatura: {{ current.temperature }} ℃ (odczuwalna {{ current.temperaturePerceived }} ℃)</p>
+    <p>Wilgotność: {{ current.humidity }} % | Ciśnienie: {{ current.pressure }} hPa</p>
+    <p>Wiatr: {{ current.windSpeed }} m/s | UV: {{ current.indexUV }}</p>
+    <p>{{ current.description }}
+      <img [src]="'http://openweathermap.org/img/wn/' + current.icon + '.png'" alt="ikona">
+    </p>
+  </div>
+
+  <hr>
+
+  <div class="history-controls">
+    <h4>Historia w przedziale</h4>
+    <form (ngSubmit)="showRangeHistory()" #rangeForm="ngForm">
+      <input type="date" [(ngModel)]="rangeStart" name="rangeStart" required>
+      <input type="date" [(ngModel)]="rangeEnd" name="rangeEnd" required>
+      <button type="submit" [disabled]="rangeForm.invalid || loading">Pokaż historię</button>
+    </form>
+  </div>
+
+  <div class="history-controls">
+    <h4>Długoterminowa (ostatnie dni)</h4>
+    <form (ngSubmit)="showLongTerm()" #longForm="ngForm">
+      <input type="number" min="1" [(ngModel)]="longTermDays" name="longTermDays" required> dni
+      <button type="submit" [disabled]="longForm.invalid || loading">Pokaż długoterminowo</button>
+    </form>
+  </div>
+
+  <div *ngIf="!loading && history">
+    <div *ngIf="history.length; else noData">
+      <h3>Wyniki historii ({{ history.length }} rekordów)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th><th>Temp.</th><th>Odcz.</th><th>Wilg.</th><th>Ciśn.</th><th>Wiatr</th><th>UV</th><th>Opis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of history">
+            <td>{{ s.recordedAt }}</td>
+            <td>{{ s.temperature }}</td>
+            <td>{{ s.temperaturePerceived }}</td>
+            <td>{{ s.humidity }}</td>
+            <td>{{ s.pressure }}</td>
+            <td>{{ s.windSpeed }}</td>
+            <td>{{ s.indexUV }}</td>
+            <td>{{ s.description }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noData>
+      <p>Brak danych w wybranym zakresie.</p>
+    </ng-template>
+  </div>
+</div>
