@@ -22,8 +22,10 @@ import { AuthModule } from '@auth0/auth0-angular';
       domain: 'dev-5fzx8o0336ybfbaq.us.auth0.com', // ← ZMIEŃ NA SWOJE
       clientId: 'UJDuHyg7fLKwDdinqhclvzFu3pO5jITW',
       authorizationParams: {
-        redirect_uri: window.location.origin
+        redirect_uri: window.location.origin,
+        audience: 'https://weather-api.theglab',  // <-- dokładnie to co w Auth0 API!
       }
+    
     })
   ],
   providers: [

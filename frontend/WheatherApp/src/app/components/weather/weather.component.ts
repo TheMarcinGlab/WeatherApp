@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../../service/weather/weather.service';
 import { City } from '../../models/city';
 import { WeatherSnapshot } from '../../models/weather-snapshot';
-
+import { AuthConfig } from '@auth0/auth0-angular';
+import { StatusLoginService} from 'src/app/service/statusLogin/status-login.service';
+import { AuthService } from '@auth0/auth0-angular';
 @Component({
   selector: 'app-weather',
   templateUrl: './weather.component.html',
@@ -19,14 +21,29 @@ export class WeatherComponent implements OnInit {
   loading = false;
   error = '';
   historyTitle: string = '';
+  maxDays: number = 7;
+  
 
-  constructor(private svc: WeatherService) {}
+  constructor(
+    private svc: WeatherService,
+    private auth: AuthService,
+    public statusLogin: StatusLoginService
+  ) {}
+
 
   ngOnInit(): void {
     this.svc.getCities().subscribe(
       data => this.cities = data,
       () => this.error = 'Nie udało się pobrać listy miast'
     );
+
+  
+
+    this.auth.isAuthenticated$.subscribe(auth => {
+      this.statusLogin.isLoginIn = auth;
+      this.maxDays = auth ? 14 : 7;
+    });
+    
   }
 
   onCityChange(): void {

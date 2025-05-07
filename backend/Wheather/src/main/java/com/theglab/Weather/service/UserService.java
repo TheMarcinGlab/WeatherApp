@@ -12,17 +12,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Optional<User> getBySub(String sub) {
-        return userRepository.findBySub(sub);
-    }
 
-    public User createIfNotExists(String sub, String email, String role) {
-        return userRepository.findBySub(sub).orElseGet(() -> {
+    public User createIfNotExists(String email, String role) {
+        return userRepository.findById(email).orElseGet(() -> {
             User u = new User();
-            u.setSub(sub);
             u.setEmail(email);
             u.setRole(role);
             return userRepository.save(u);
         });
     }
+
 }

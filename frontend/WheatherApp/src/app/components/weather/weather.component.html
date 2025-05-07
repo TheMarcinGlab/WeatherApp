@@ -38,7 +38,7 @@
       <input 
         type="number" 
         min="1" 
-        max="14" 
+        [max] = 'maxDays'
         [(ngModel)]="longTermDays" 
         name="longTermDays" 
         required
@@ -49,7 +49,7 @@
         <div *ngIf="inpudDay.invalid && inpudDay.touched" class="error">
           <!-- <span *ngIf="inpudDay.errors?.['required']">To pole jest wymagane</span> -->
            <span *ngIf="inpudDay.errors?.['min']">Wartość musi być minimum 1</span>
-           <span *ngIf="inpudDay.errors?.['max']">Wartość maksymalna to 14</span>
+           <span *ngIf="inpudDay.errors?.['max']">Wartość maksymalna to {{statusLogin.isLoginIn ? 14 : 7}} dni</span>
 
         </div>
 

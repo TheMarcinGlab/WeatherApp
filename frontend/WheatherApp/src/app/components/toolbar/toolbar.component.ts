@@ -16,8 +16,12 @@ export class ToolbarComponent {
 
   }
 
-  toggleLogin(){
-    
+  toggleLogin() {
+    if (this.statusLogin.isLoginIn) {
+      this.statusLogin.logout();
+    } else {
+      this.statusLogin.login();
+    }
   }
-
+  
 }
