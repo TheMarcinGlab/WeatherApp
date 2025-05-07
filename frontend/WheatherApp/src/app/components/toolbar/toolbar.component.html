@@ -2,8 +2,11 @@
     <div class="left">🌤️ WeatherApp</div>
     <div class="right">
       <span *ngIf="this.statusLogin.isLoginIn == true">Witaj {{this.statusLogin.emailGlobal}}</span>
-      <button  *ngIf="statusLogin.isLoginIn == true"  (click)="addData()">Dodaj dane</button>
-      <button (click)="toggleLogin()">
+<!-- Widoczny tylko, jeśli użytkownik zalogowany i ma rolę ROLE_ADMIN -->
+        <button *ngIf="statusLogin.isLoginIn && statusLogin.roleUser === 'ROLE_ADMIN'" (click)="addData()">
+         Dodaj dane
+        </button>
+        <button (click)="toggleLogin()">
         {{ statusLogin.isLoginIn ? "Wyloguj" : "Zaloguj" }}
       </button>
     </div>

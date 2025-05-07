@@ -8,6 +8,8 @@ import { HttpClient } from '@angular/common/http';
 export class StatusLoginService {
   isLoginIn: boolean = false;
   emailGlobal: string = '';
+  roleUser: string = '';
+
 
   constructor(
     private authService: AuthService,
@@ -31,24 +33,35 @@ export class StatusLoginService {
     this.authService.idTokenClaims$.subscribe({
       next: (claims: any) => {
         console.log('🧾 Pełne dane z id_token:', claims);
-
+  
         const email = claims?.email;
-
+  
         if (!email) {
           console.error('❌ Email not found in id_token claims!');
           return;
         }
-
+  
         localStorage.setItem('user_email', email);
         this.emailGlobal = email;
-
-        this.sendUserToDatabase(email);
+  
+        // ⬇️ TUTAJ pobieramy access token i kontynuujemy logikę
+        this.authService.getAccessTokenSilently().subscribe({
+          next: (accessToken: string) => {
+            localStorage.setItem('access_token', accessToken); // ZAPISUJEMY token
+            this.sendUserToDatabase(email);                    // TERAZ token już istnieje
+            this.fetchUserRole(email);
+          },
+          error: (err) => {
+            console.error('❌ Nie udało się pobrać access_token:', err);
+          }
+        });
       },
       error: (err) => {
         console.error('❌ Błąd podczas pobierania id_token claims', err);
       }
     });
   }
+  
 
   private sendUserToDatabase(email: string): void {
     const body = { email, role: 'ROLE_USER' };
@@ -93,4 +106,22 @@ export class StatusLoginService {
   private clearUserData(): void {
     localStorage.removeItem('user_email');
   }
+
+
+
+  private fetchUserRole(email: string): void {
+    this.http.get('http://localhost:8080/api/public/getUserRoleByEmail', {
+      params: { email },
+      responseType: 'text' // bo backend zwraca surowy string, np. "ROLE_ADMIN"
+    }).subscribe({
+      next: (role: string) => {
+        this.roleUser = role;
+        console.log('🔐 Rola użytkownika z bazy:', role);
+      },
+      error: (err) => {
+        console.error('❌ Błąd przy pobieraniu roli użytkownika', err);
+      }
+    });
+  }
+  
 }

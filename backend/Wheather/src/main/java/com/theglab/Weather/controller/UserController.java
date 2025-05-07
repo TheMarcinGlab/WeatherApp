@@ -40,6 +40,13 @@ public class UserController {
     }
 
 
+    @GetMapping("getUserRoleByEmail")
+    public ResponseEntity<String> getRoleByEmail(@RequestParam String email) {
+        return userRepository.findById(email)
+                .map(user -> ResponseEntity.ok(user.getRole()))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("ROLE_UNKNOWN"));
+    }
+
 
 
 }
