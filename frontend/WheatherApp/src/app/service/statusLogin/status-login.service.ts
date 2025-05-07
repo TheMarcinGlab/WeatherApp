@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class StatusLoginService {
   isLoginIn: boolean = false;
+  emailGlobal: string = '';
 
   constructor(
     private authService: AuthService,
@@ -39,6 +40,8 @@ export class StatusLoginService {
         }
 
         localStorage.setItem('user_email', email);
+        this.emailGlobal = email;
+
         this.sendUserToDatabase(email);
       },
       error: (err) => {

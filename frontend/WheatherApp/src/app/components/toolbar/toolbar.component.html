@@ -1,6 +1,7 @@
 <div class="toolbar">
     <div class="left">🌤️ WeatherApp</div>
     <div class="right">
+      <span *ngIf="this.statusLogin.isLoginIn == true">Witaj {{this.statusLogin.emailGlobal}}</span>
       <button  *ngIf="statusLogin.isLoginIn == true"  (click)="addData()">Dodaj dane</button>
       <button (click)="toggleLogin()">
         {{ statusLogin.isLoginIn ? "Wyloguj" : "Zaloguj" }}
