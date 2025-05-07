@@ -1,0 +1,10 @@
+<div class="toolbar">
+    <div class="left">🌤️ WeatherApp</div>
+    <div class="right">
+      <button  *ngIf="statusLogin.isLoginIn == true"  (click)="addData()">Dodaj dane</button>
+      <button (click)="toggleLogin()">
+        {{ statusLogin.isLoginIn ? "Wyloguj" : "Zaloguj" }}
+      </button>
+    </div>
+  </div>
+  

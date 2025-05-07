@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/weather")
+@RequestMapping("/api/public/weather")
 @CrossOrigin(origins = "http://localhost:4200")
 public class WeatherController {
 

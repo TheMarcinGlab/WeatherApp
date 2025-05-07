@@ -56,4 +56,11 @@ INSERT INTO weather_snapshot (city_id, temperature, temperature_perceived, press
 
 INSERT INTO weather_snapshot (city_id, temperature, temperature_perceived, pressure, humidity, wind_speed, index_UV, description, icon, recorded_at) VALUES
 (3, 25.70, 22.10, 1008, 58, 5.6, 7, 'sunny', '02d', '2025-05-09 14:00:00'),
-(3, 19.20, 16.00, 1009, 62, 3.9, 4, 'Clear sky', '01n', '2025-05-10 22:00:00'),
+(3, 19.20, 16.00, 1009, 62, 3.9, 4, 'Clear sky', '01n', '2025-05-10 22:00:00');
+
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    sub VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL DEFAULT 'ROLE_USER'
+);
