@@ -28,9 +28,6 @@ public class WeatherService {
                 );
     }
 
-    /**
-     * Pobiera rekordy od 00:00 startDate do 23:59:59 endDate
-     */
     public List<WeatherSnapshot> getHistoryByDateRange(Long cityId, LocalDate startDate, LocalDate endDate) {
         LocalDateTime from = startDate.atStartOfDay();
         LocalDateTime to   = endDate.atTime(LocalTime.MAX.withNano(0));
