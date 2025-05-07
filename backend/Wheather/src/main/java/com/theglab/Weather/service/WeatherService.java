@@ -1,6 +1,9 @@
 package com.theglab.Weather.service;
 
+import com.theglab.Weather.DTO.WeatherSnapshotDto;
+import com.theglab.Weather.model.City;
 import com.theglab.Weather.model.WeatherSnapshot;
+import com.theglab.Weather.repository.CityRepository;
 import com.theglab.Weather.repository.WeatherSnapshotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,9 @@ public class WeatherService {
 
     @Autowired
     private WeatherSnapshotRepository repo;
+
+    @Autowired
+    private CityRepository cityRepository;
 
     public WeatherSnapshot getCurrentWeatherByCityId(Long cityId) {
         return repo.findTopByCityIdOrderByRecordedAtDesc(cityId)
@@ -50,4 +56,26 @@ public class WeatherService {
 
         return repo.findForecastByCityAndDateRange(cityId, startDate, endDate);
     }
+
+    public void saveSnapshotFromDto(WeatherSnapshotDto dto) {
+        City city = cityRepository.findById(dto.city().id())
+                .orElseThrow(() -> new RuntimeException("Nie znaleziono miasta"));
+
+        WeatherSnapshot snapshot = new WeatherSnapshot();
+        snapshot.setCity(city);
+        snapshot.setTemperature(dto.temperature());
+        snapshot.setTemperaturePerceived(dto.temperaturePerceived());
+        snapshot.setPressure(dto.pressure());
+        snapshot.setHumidity(dto.humidity());
+        snapshot.setWindSpeed(dto.windSpeed());
+        snapshot.setIndexUV(dto.indexUV());
+        snapshot.setDescription(dto.description());
+        snapshot.setIcon(dto.icon());
+        snapshot.setRecordedAt(dto.recordedAt());
+
+        repo.save(snapshot);
+    }
+
+
+
 }

@@ -7,12 +7,14 @@ import { WeatherComponent } from './components/weather/weather.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthModule } from '@auth0/auth0-angular';
+import { MenuAddToDatabaseComponent } from './components/menu-add-to-database/menu-add-to-database.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     WeatherComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    MenuAddToDatabaseComponent
   ],
   imports: [
     BrowserModule,

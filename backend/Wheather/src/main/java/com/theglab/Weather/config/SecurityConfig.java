@@ -14,25 +14,30 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
+    private final DatabaseJwtConverter databaseJwtConverter;
+
+    public SecurityConfig(DatabaseJwtConverter databaseJwtConverter) {
+        this.databaseJwtConverter = databaseJwtConverter;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(new AntPathRequestMatcher("/api/public/createNewUser")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/api/public/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/simple/**")).hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(new AntPathRequestMatcher("/api/admin/**")).hasRole("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/api/simple/**")).hasAnyAuthority("ROLE_USER", "ROLE_ADMIN") // <-- ZMIANA
+                        .requestMatchers(new AntPathRequestMatcher("/api/admin/**")).hasAuthority("ROLE_ADMIN") // <-- ZMIANA
                         .anyRequest().authenticated()
+
                 )
-                .cors(cors -> {}) // Nowy styl CORS
+                .cors(cors -> {})
                 .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt.jwtAuthenticationConverter(new CustomJwtConverter()))
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(databaseJwtConverter))
                 );
 
         return http.build();
     }
-
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -46,5 +51,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-
 }
+

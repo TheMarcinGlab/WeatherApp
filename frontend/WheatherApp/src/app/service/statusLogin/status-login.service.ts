@@ -68,6 +68,7 @@ export class StatusLoginService {
   
     const token = localStorage.getItem('access_token');
   
+    console.log("Token z localstorage: ", token);
     const options = token
       ? { headers: { Authorization: `Bearer ${token}` } }
       : {}; // nie przekazuj nagłówków, jeśli brak tokena

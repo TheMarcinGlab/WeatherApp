@@ -1,6 +1,6 @@
 <app-toolbar></app-toolbar>
 
-<div class="container">
+<div *ngIf="!showAddForm">
   <h2>Pogoda – wybierz miasto</h2>
   <select [(ngModel)]="selectedCityId" name="city" (change)="onCityChange()">
     <option *ngFor="let city of cities" [value]="city.id">
@@ -86,4 +86,60 @@
 
     <button *ngIf="!loading && history.length > 0" (click)="generateJSON(history)">Wygeneruj plik JSON z danymi</button>
   </div>
+</div>
+
+
+
+<div *ngIf="showAddForm">
+  
+  <div class="container" *ngIf="statusLogin.roleUser; else accessDenied">
+    <h2>Dodaj wpis pogodowy</h2>
+  
+    <form (ngSubmit)="submitForm()" #form="ngForm">
+  
+      <label>Miasto:</label>
+      <select [(ngModel)]="weather.cityId" name="cityId" required>
+        <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+      </select>
+  
+      <label>Data:</label>
+      <input type="datetime-local" [(ngModel)]="weather.recordedAt" name="recordedAt" required>
+  
+      <label>Temperatura:</label>
+      <input type="number" [(ngModel)]="weather.temperature" name="temperature" required>
+  
+      <label>Odczuwalna:</label>
+      <input type="number" [(ngModel)]="weather.temperaturePerceived" name="temperaturePerceived" required>
+  
+      <label>Wilgotność:</label>
+      <input type="number" [(ngModel)]="weather.humidity" name="humidity" required>
+  
+      <label>Ciśnienie:</label>
+      <input type="number" [(ngModel)]="weather.pressure" name="pressure" required>
+  
+      <label>Wiatr:</label>
+      <input type="number" [(ngModel)]="weather.windSpeed" name="windSpeed" required>
+  
+      <label>UV:</label>
+      <input type="number" [(ngModel)]="weather.indexUV" name="indexUV" required>
+  
+      <label>Opis:</label>
+      <input type="text" [(ngModel)]="weather.description" name="description" required>
+  
+      <label>Ikona:</label>
+      <input type="text" [(ngModel)]="weather.icon" name="icon" required>
+  
+      <p>✅ form.valid = {{ form.valid }}</p>
+      <p>✅ weather = {{ weather | json }}</p>
+
+      <button type="submit" [disabled]="form.invalid">Dodaj wpis</button>
+    </form>
+  </div>
+  
+  <ng-template #accessDenied>
+    <p>Nie masz uprawnień do dodawania danych pogodowych.</p>
+  </ng-template>
+  
+
+  <button (click)="showAddForm = false">Anuluj</button>
 </div>

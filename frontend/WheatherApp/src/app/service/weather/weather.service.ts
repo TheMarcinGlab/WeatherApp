@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { City } from '../../models/city';
 import { WeatherSnapshot } from '../../models/weather-snapshot';
+import { AuthService } from '@auth0/auth0-angular';
+import { from, switchMap } from 'rxjs';
+import { AuthConfig } from '@auth0/auth0-angular';
 
 @Injectable({ providedIn: 'root' })
 export class WeatherService {
   private api = 'http://localhost:8080/api'; // Upewnij się, że port i host się zgadzają
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   getCities(): Observable<City[]> {
     // 🔧 ZMIANA: poprawiona ścieżka do endpointu miast
@@ -47,4 +50,16 @@ export class WeatherService {
 
     return this.http.get<WeatherSnapshot[]>(`${this.api}/public/weather/futureWeather`, { params });
   }
+
+  addWeatherSnapshot(data: any): Observable<any> {
+    return this.auth.getAccessTokenSilently().pipe(
+      switchMap(token => {
+        console.log('🛡️ Token wysyłany:', token); // <-- to dodaj, żeby zobaczyć token w konsoli
+
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.post('http://localhost:8080/api/admin/weather/add', data, { headers });
+      })
+    );
+  }
+  
 }

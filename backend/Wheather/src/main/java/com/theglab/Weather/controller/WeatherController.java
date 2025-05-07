@@ -1,5 +1,6 @@
 package com.theglab.Weather.controller;
 
+import com.theglab.Weather.DTO.WeatherSnapshotDto;
 import com.theglab.Weather.model.City;
 import com.theglab.Weather.model.WeatherSnapshot;
 import com.theglab.Weather.service.WeatherService;
@@ -93,5 +94,8 @@ public class WeatherController {
         return ResponseEntity.ok(futureWeather);
 
     }
+
+
+
 
 }

@@ -5,6 +5,8 @@ import { WeatherSnapshot } from '../../models/weather-snapshot';
 import { AuthConfig } from '@auth0/auth0-angular';
 import { StatusLoginService} from 'src/app/service/statusLogin/status-login.service';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedService } from 'src/app/service/shared/shared.service';
+
 @Component({
   selector: 'app-weather',
   templateUrl: './weather.component.html',
@@ -23,12 +25,30 @@ export class WeatherComponent implements OnInit {
   historyTitle: string = '';
   maxDays: number = 7;
   visibleTable:boolean = false;
+  showAddForm: boolean = false;
+
+
+  weather: any = {
+    cityId: null,
+    recordedAt: '',
+    temperature: null,
+    temperaturePerceived: null,
+    humidity: null,
+    pressure: null,
+    windSpeed: null,
+    indexUV: null,
+    description: '',
+    icon: ''
+  };
+  
+
   
 
   constructor(
     private svc: WeatherService,
     private auth: AuthService,
-    public statusLogin: StatusLoginService
+    public statusLogin: StatusLoginService,
+    private shared: SharedService
   ) {}
 
 
@@ -38,6 +58,9 @@ export class WeatherComponent implements OnInit {
       () => this.error = 'Nie udało się pobrać listy miast'
     );
 
+  this.shared.showAddForm$.subscribe(show => {
+    this.showAddForm = show;
+  });
   
 
     this.auth.isAuthenticated$.subscribe(auth => {
@@ -149,4 +172,31 @@ export class WeatherComponent implements OnInit {
   }
   
 
+
+  submitForm(): void {
+    console.log("SubmitForm działa ✅");
+  
+    const payload = {
+      ...this.weather,
+      city: { id: this.selectedCityId }
+    };
+    delete payload.cityId;
+  
+    console.log("📦 Payload wysyłany do backendu:", JSON.stringify(payload, null, 2));
+  
+    this.svc.addWeatherSnapshot(payload).subscribe({
+      next: () => {
+        alert('Dane zostały zapisane!');
+        this.weather = {};
+        this.shared.hideForm();
+      },
+      error: (err: any) => {
+        console.error('❌ Błąd zapisu:', err);
+      }
+    });
+  }
+  
+  
+  
+  
 }
