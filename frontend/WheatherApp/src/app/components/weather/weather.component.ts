@@ -22,6 +22,7 @@ export class WeatherComponent implements OnInit {
   error = '';
   historyTitle: string = '';
   maxDays: number = 7;
+  visibleTable:boolean = false;
   
 
   constructor(
@@ -93,6 +94,7 @@ export class WeatherComponent implements OnInit {
           this.history = data;
           console.log('[HTTP] Historia odebrana:', data);
           this.loading = false;
+          this.generateJSON(this.history);
         },
         error: err => {
           console.error('[HTTP] Błąd:', err);
@@ -114,7 +116,11 @@ export class WeatherComponent implements OnInit {
 
     this.svc.getFutureWeather(this.selectedCityId, this.longTermDays)
       .subscribe(
-        data => { this.history = data; this.loading = false; },
+        data => { 
+          this.history = data; 
+          this.loading = false;
+          this.generateJSON(this.history);
+        },
         err => {
           console.error('[showLongTerm] Błąd:', err);
           this.error = 'Błąd podczas pobierania długoterminowej historii';
@@ -122,4 +128,25 @@ export class WeatherComponent implements OnInit {
         }
       );
   }
+
+
+  generateJSON(data: WeatherSnapshot[]): void {
+    if (!data || data.length === 0) {
+      console.warn('Brak danych do zapisania jako JSON');
+      return;
+    }
+  
+    const filename = `weather-history-${new Date().toISOString()}.json`;
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+  
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  
+
 }

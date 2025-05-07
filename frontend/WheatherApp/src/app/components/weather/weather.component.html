@@ -57,7 +57,7 @@
     </form>
   </div>
 
-  <div *ngIf="!loading && history">
+  <div *ngIf="!loading && history" >
     <div *ngIf="history.length; else noData">
       <h3>{{this.historyTitle}}</h3>
       <table>
@@ -83,5 +83,7 @@
     <ng-template #noData>
       <p>Brak danych w wybranym zakresie.</p>
     </ng-template>
+
+    <button *ngIf="!loading && history.length > 0" (click)="generateJSON(history)">Wygeneruj plik JSON z danymi</button>
   </div>
 </div>
