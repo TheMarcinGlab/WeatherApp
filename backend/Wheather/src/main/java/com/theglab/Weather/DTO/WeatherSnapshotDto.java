@@ -1,10 +1,10 @@
-package com.theglab.Weather.dto;
+package com.theglab.Weather.DTO;
 
 import java.time.LocalDateTime;
 
 public record WeatherSnapshotDto(
         Long id,
-        com.theglab.Weather.dto.CityDto city,
+        com.theglab.Weather.DTO.CityDto city,
         Double temperature,
         Double temperaturePerceived,
         Integer pressure,

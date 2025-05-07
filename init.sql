@@ -51,3 +51,9 @@ INSERT INTO weather_snapshot (city_id, temperature, temperature_perceived, press
 -- London
 (4, 16.80, 16.30, 1016, 75, 4.2, 3, 'Light rain', '10d', '2025-05-06 12:00:00'),
 (4, 11.50, 10.80, 1018, 80, 2.8, 1, 'Overcast clouds', '04n', '2025-05-05 23:00:00');
+
+
+
+INSERT INTO weather_snapshot (city_id, temperature, temperature_perceived, pressure, humidity, wind_speed, index_UV, description, icon, recorded_at) VALUES
+(3, 25.70, 22.10, 1008, 58, 5.6, 7, 'sunny', '02d', '2025-05-09 14:00:00'),
+(3, 19.20, 16.00, 1009, 62, 3.9, 4, 'Clear sky', '01n', '2025-05-10 22:00:00'),

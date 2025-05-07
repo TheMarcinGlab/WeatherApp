@@ -36,4 +36,13 @@ export class WeatherService {
         .set('days', days.toString())
     });
   }
+
+  getFutureWeather(cityId: number, days: number): Observable<WeatherSnapshot[]>{
+    const params = new HttpParams()
+    .set('cityId', cityId.toString())
+    .set('days', days.toString());
+
+    return this.http.get<WeatherSnapshot[]>(`${this.api}/weather/futureWeather`, {params})
+
+  }
 }

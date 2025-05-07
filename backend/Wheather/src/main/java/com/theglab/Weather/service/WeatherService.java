@@ -38,4 +38,16 @@ public class WeatherService {
         LocalDateTime since = LocalDateTime.now().minusDays(days);
         return repo.findByCityIdAndRecordedAtAfterOrderByRecordedAtDesc(cityId, since);
     }
+
+
+    public List<WeatherSnapshot> getFutureWeather(Long cityId, int days){
+        LocalDate start = LocalDate.now().plusDays(1);
+        LocalDate end = start.plusDays(days -1);
+
+
+        LocalDateTime startDate = start.atStartOfDay();
+        LocalDateTime endDate = end.atTime(LocalTime.MAX.withNano(0));
+
+        return repo.findForecastByCityAndDateRange(cityId, startDate, endDate);
+    }
 }

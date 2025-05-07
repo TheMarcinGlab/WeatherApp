@@ -4,6 +4,7 @@ import com.theglab.Weather.model.City;
 import com.theglab.Weather.model.WeatherSnapshot;
 import com.theglab.Weather.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class WeatherController {
     }
 
 
-    private com.theglab.Weather.dto.CityDto mapCityToDto(City city) {
-        return new com.theglab.Weather.dto.CityDto(
+    private com.theglab.Weather.DTO.CityDto mapCityToDto(City city) {
+        return new com.theglab.Weather.DTO.CityDto(
                 city.getId(),
                 city.getName(),
                 city.getCountryCode(),
@@ -35,8 +36,8 @@ public class WeatherController {
         );
     }
 
-    private com.theglab.Weather.dto.WeatherSnapshotDto mapSnapshotToDto(WeatherSnapshot snapshot) {
-        return new com.theglab.Weather.dto.WeatherSnapshotDto(
+    private com.theglab.Weather.DTO.WeatherSnapshotDto mapSnapshotToDto(WeatherSnapshot snapshot) {
+        return new com.theglab.Weather.DTO.WeatherSnapshotDto(
                 snapshot.getId(),
                 mapCityToDto(snapshot.getCity()),
                 snapshot.getTemperature(),
@@ -54,14 +55,14 @@ public class WeatherController {
 
     /** Historia od daty start do daty end (oba inclusive) */
     @GetMapping("/history/range")
-    public ResponseEntity<List<com.theglab.Weather.dto.WeatherSnapshotDto>> getHistoryByRange(
+    public ResponseEntity<List<com.theglab.Weather.DTO.WeatherSnapshotDto>> getHistoryByRange(
             @RequestParam Long cityId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
         List<WeatherSnapshot> list = weatherService.getHistoryByDateRange(cityId, startDate, endDate);
 
-        List<com.theglab.Weather.dto.WeatherSnapshotDto> dtoList = list.stream()
+        List<com.theglab.Weather.DTO.WeatherSnapshotDto> dtoList = list.stream()
                 .map(this::mapSnapshotToDto)
                 .toList();
 
@@ -76,4 +77,21 @@ public class WeatherController {
 
         return ResponseEntity.ok(weatherService.getLastDaysHistory(cityId, days));
     }
+
+    @GetMapping("/futureWeather")
+    public ResponseEntity<List<WeatherSnapshot>> futureWeather(
+        @RequestParam Long cityId,
+        @RequestParam int days)
+    {
+
+        if(days < 1 || days > 14){
+            return ResponseEntity.badRequest().build();
+        }
+
+
+        List<WeatherSnapshot> futureWeather = weatherService.getFutureWeather(cityId, days);
+        return ResponseEntity.ok(futureWeather);
+
+    }
+
 }

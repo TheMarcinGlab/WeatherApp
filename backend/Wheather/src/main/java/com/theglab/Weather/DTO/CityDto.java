@@ -1,4 +1,4 @@
-package com.theglab.Weather.dto;
+package com.theglab.Weather.DTO;
 
 public record CityDto(
         Long id,

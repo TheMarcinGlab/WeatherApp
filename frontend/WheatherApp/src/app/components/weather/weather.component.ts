@@ -15,9 +15,10 @@ export class WeatherComponent implements OnInit {
   history: WeatherSnapshot[] = [];
   rangeStart = '';
   rangeEnd = '';
-  longTermDays = 7;
+  longTermDays: number = 1;
   loading = false;
   error = '';
+  historyTitle: string = '';
 
   constructor(private svc: WeatherService) {}
 
@@ -63,6 +64,7 @@ export class WeatherComponent implements OnInit {
       return;
     }
 
+    this.historyTitle = "Historia pogody"
     this.loading = true;
     this.error = '';
 
@@ -91,7 +93,9 @@ export class WeatherComponent implements OnInit {
 
     this.loading = true;
     this.error = '';
-    this.svc.getHistoryLastDays(this.selectedCityId, this.longTermDays)
+    this.historyTitle = "Prognoza pogody na " + this.longTermDays + " dni";
+
+    this.svc.getFutureWeather(this.selectedCityId, this.longTermDays)
       .subscribe(
         data => { this.history = data; this.loading = false; },
         err => {

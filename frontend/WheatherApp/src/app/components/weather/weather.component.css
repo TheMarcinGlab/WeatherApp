@@ -1,6 +1,107 @@
-.container { max-width: 800px; margin: 2rem auto; font-family: Arial, sans-serif; }
-select, input, button { margin: 0.5rem; padding: 0.4rem; }
-.error { color: red; margin-top: 1rem; }
-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: center; }
-.history-controls { margin-top: 1.5rem; }
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: #f2f6fc;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2, h3, h4 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+  
+  select, input[type="date"], input[type="number"], button {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    background: #ecf0f3;
+    box-shadow: inset 2px 2px 5px #d1d9e6, inset -2px -2px 5px #ffffff;
+    transition: all 0.3s ease;
+    margin: 0.4rem 0;
+  }
+  
+  select:focus,
+  input:focus {
+    outline: none;
+    background: #e3eaf2;
+    box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.3);
+  }
+  
+  button {
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  button:hover {
+    transform: scale(1.05);
+    background-color: #2980b9;
+  }
+  
+  hr {
+    border: none;
+    height: 1px;
+    background: #dfe6e9;
+    margin: 2rem 0;
+  }
+  
+  .error {
+    color: #e74c3c;
+    margin-top: 0.5rem;
+  }
+  
+  .input-error {
+    border: 2px solid #e74c3c !important;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: #f9fbfd;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px #dfe6e9;
+  }
+  
+  table th, table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ecf0f1;
+  }
+  
+  table th {
+    background: #ecf0f3;
+    color: #34495e;
+  }
+  
+  table tr:hover {
+    background: #eaf4fc;
+  }
+  
+  img {
+    vertical-align: middle;
+    margin-left: 8px;
+    height: 40px;
+  }
+  
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  
